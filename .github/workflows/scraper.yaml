@@ -36,10 +36,10 @@ jobs:
         run: |
           if [ -f ./push_me ]; then
             echo "📦 Pushing updated data to GitHub..."
-            git pull --rebase
             git add .
             DATE=$(date +"%F, %H:%M:%S")
             git commit -m "updated data - $DATE" --no-edit || echo "🔸 Nothing to commit"
+            git pull --rebase --autostash
             git push
           else
             echo "✅ No new data to push"

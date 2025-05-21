@@ -79,7 +79,14 @@ const checkIfHasNewItem = async (data, topic) => {
         savedUrls = require(filePath);
     } catch (e) {
         if (e.code === "MODULE_NOT_FOUND") {
-            fs.mkdirSync('data', { recursive: true });;
+            if (!fs.existsSync('data')) {
+                fs.mkdirSync('data');
+            } else {
+                const stats = fs.statSync('data');
+                if (!stats.isDirectory()) {
+                    throw new Error("'data' exists but is not a directory");
+                }
+            };;
             fs.writeFileSync(filePath, '[]');
         } else {
             console.log(e);
